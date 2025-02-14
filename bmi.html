@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f2f5;
+        }
+
+        .calculator {
+            max-width: 400px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .title {
+            text-align: center;
+            color: #1877f2;
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #444;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .calculate-btn {
+            width: 100%;
+            padding: 10px;
+            background-color: #1877f2;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        .calculate-btn:hover {
+            background-color: #166fe5;
+        }
+
+        .result {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .bmi-value {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .bmi-category {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .extra-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+        }
+
+        .extra-button {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            background-color: #4CAF50;
+            color: white;
+            transition: background-color 0.2s;
+        }
+
+        .extra-button:hover {
+            background-color: #45a049;
+        }
+
+        .unit-label {
+            color: #666;
+            font-size: 14px;
+            margin-left: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <h2 class="title">เว็บคำนวณ BMI</h2>
+
+        <div class="input-group">
+            <label for="weight">น้ำหนัก<span class="unit-label">(กก.)</span></label>
+            <input type="number" id="weight" placeholder="ใส่น้ำหนัก">
+        </div>
+
+        <div class="input-group">
+            <label for="height">ส่วนสูง <span class="unit-label">(ซม.)</span></label>
+            <input type="number" id="height" placeholder="ใส่ส่วนสูง">
+        </div>
+
+        <button class="calculate-btn" onclick="calculateBMI()">เว็บคำนวณ</button>
+
+        <div class="result" id="result">
+            <div class="bmi-value" id="bmi-value"></div>
+            <div class="bmi-category" id="bmi-category"></div>
+            <div id="bmi-message"></div>
+        </div>
+
+        <div class="extra-buttons">
+            <button class="extra-button"><a href="home2.html">HOME</a></button>
+            <button class="extra-button" ><a href="pro.html">PROFILE</a></button>
+            <button class="extra-button" ><a href="cal.html">CALCULATE</a></button>
+        </div>
+    </div>
+
+    <script>
+        function calculateBMI() {
+            const weight = parseFloat(document.getElementById('weight').value);
+            const height = parseFloat(document.getElementById('height').value);
+
+            if (!weight || !height) {
+                alert('ใส่ข้อมูลให้ถูกต้อง');
+                return;
+            }
+
+            const bmi = weight / Math.pow(height/100, 2);
+            displayResult(bmi);
+        }
+
+        function displayResult(bmi) {
+            const result = document.getElementById('result');
+            const bmiValue = document.getElementById('bmi-value');
+            const bmiCategory = document.getElementById('bmi-category');
+            const bmiMessage = document.getElementById('bmi-message');
+
+            result.style.display = 'block';
+            bmiValue.textContent = `BMI: ${bmi.toFixed(1)}`;
+
+            let category, message, color;
+            if (bmi < 18.5) {
+                category = 'Underweight';
+                message = 'น้ำหนักน้อย / ผอม';
+                color = '#ffd700';
+            } else if (bmi < 25) {
+                category = 'Normal Weight';
+                message = 'ปกติ (สุขภาพดี)';
+                color = '#90EE90';
+            } else if (bmi < 30) {
+                category = 'Overweight';
+                message = 'ท้วม / โรคอ้วนระดับ 1';
+                color = '#FFA500';
+            } else if (bmi < 35) {
+                category = 'Overweight';
+                message = 'อ้วน / โรคอ้วนระดับ 2';
+                color = '#FFA500';
+            } else {
+                category = 'Obese';
+                message = 'อ้วนมาก / โรคอ้วนระดับ 3';
+                color = '#FF6B6B';
+            }
+
+            bmiCategory.textContent = category;
+            bmiMessage.textContent = message;
+            result.style.backgroundColor = color;
+        }
+
+        function showBMIChart() {
+            alert('BMI Categories:\n\nUnderweight: < 18.5\nNormal Weight: 18.5 - 24.9\nOverweight: 25 - 29.9\nObese: ≥ 30');
+        }
+
+        function saveResults() {
+            const bmiValue = document.getElementById('bmi-value').textContent;
+            if (bmiValue) {
+                alert('Results saved successfully!\n' + bmiValue);
+            } else {
+                alert('Please calculate BMI first');
+            }
+        }
+
+        function clearFields() {
+            document.getElementById('weight').value = '';
+            document.getElementById('height').value = '';
+            document.getElementById('result').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

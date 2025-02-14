@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบจัดการ To-Do List</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Sarabun', sans-serif;
+        }
+        body {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f0f2f5;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+        input[type="text"],
+        textarea,
+        select,
+        input[type="datetime-local"] {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        textarea {
+            height: 100px;
+            resize: vertical;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        .btn-primary {
+            background-color: #1a73e8;
+            color: white;
+        }
+        .btn-secondary {
+            background-color: #5f6368;
+            color: white;
+            margin-left: 10px;
+        }
+        .btn-edit {
+            background-color: #fbbc04;
+            color: black;
+        }
+        .btn-delete {
+            background-color: #ea4335;
+            color: white;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #f8f9fa;
+            color: #202124;
+        }
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        .priority-high {
+            color: #ea4335;
+            font-weight: bold;
+        }
+        .priority-medium {
+            color: #fbbc04;
+            font-weight: bold;
+        }
+        .priority-low {
+            color: #34a853;
+            font-weight: bold;
+        }
+        .status-completed {
+            color: #34a853;
+            font-weight: bold;
+        }
+        .status-pending {
+            color: #fbbc04;
+            font-weight: bold;
+        }
+        .filters {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 6px;
+        }
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>ระบบจัดการ To-Do List</h2>
+        
+        <div class="filters">
+            <div class="filter-group">
+                <label>สถานะ:</label>
+                <select id="filterStatus" onchange="loadTasks()">
+                    <option value="">ทั้งหมด</option>
+                    <option value="pending">รอดำเนินการ</option>
+                    <option value="completed">เสร็จสิ้น</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>ความสำคัญ:</label>
+                <select id="filterPriority" onchange="loadTasks()">
+                    <option value="">ทั้งหมด</option>
+                    <option value="high">สูง</option>
+                    <option value="medium">ปานกลาง</option>
+                    <option value="low">ต่ำ</option>
+                </select>
+            </div>
+        </div>
+
+        <form id="taskForm">
+            <input type="hidden" id="taskId">
+            <div class="form-group">
+                <label>หัวข้อ:</label>
+                <input type="text" id="title" required>
+            </div>
+            <div class="form-group">
+                <label>รายละเอียด:</label>
+                <textarea id="description" required></textarea>
+            </div>
+            <div class="form-group">
+                <label>สถานะ:</label>
+                <select id="status" required>
+                    <option value="pending">รอดำเนินการ</option>
+                    <option value="completed">เสร็จสิ้น</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>ความสำคัญ:</label>
+                <select id="priority" required>
+                    <option value="high">สูง</option>
+                    <option value="medium">ปานกลาง</option>
+                    <option value="low">ต่ำ</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>กำหนดส่ง:</label>
+                <input type="datetime-local" id="due_date" required>
+            </div>
+            <button type="submit" id="submitBtn" class="btn-primary">เพิ่มงาน</button>
+            <button type="button" onclick="resetForm()" class="btn-secondary">ล้างฟอร์ม</button>
+        </form>
+
+        <table id="taskTable">
+            <thead>
+                <tr>
+                    <th>หัวข้อ</th>
+                    <th>รายละเอียด</th>
+                    <th>สถานะ</th>
+                    <th>ความสำคัญ</th>
+                    <th>กำหนดส่ง</th>
+                    <th>สร้างเมื่อ</th>
+                    <th>จัดการ</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <script>
+        const API_URL = 'https://67a86ba1203008941f69d972.mockapi.io/TDL';
+        let isEditing = false;
+
+        document.addEventListener('DOMContentLoaded', loadTasks);
+
+        document.getElementById('taskForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const taskData = {
+                title: document.getElementById('title').value,
+                description: document.getElementById('description').value,
+                status: document.getElementById('status').value,
+                priority: document.getElementById('priority').value,
+                due_date: new Date(document.getElementById('due_date').value).toISOString(),
+                created_at: isEditing ? undefined : new Date().toISOString()
+            };
+
+            if (isEditing) {
+                const id = document.getElementById('taskId').value;
+                await updateTask(id, taskData);
+            } else {
+                await createTask(taskData);
+            }
+
+            resetForm();
+            loadTasks();
+        });
+
+        async function loadTasks() {
+            try {
+                const response = await fetch(API_URL);
+                let tasks = await response.json();
+                
+                // Apply filters
+                const statusFilter = document.getElementById('filterStatus').value;
+                const priorityFilter = document.getElementById('filterPriority').value;
+                
+                if (statusFilter) {
+                    tasks = tasks.filter(task => task.status === statusFilter);
+                }
+                if (priorityFilter) {
+                    tasks = tasks.filter(task => task.priority === priorityFilter);
+                }
+
+                displayTasks(tasks);
+            } catch (error) {
+                console.error('Error loading tasks:', error);
+                alert('เกิดข้อผิดพลาดในการโหลดข้อมูล');
+            }
+        }
+
+        async function createTask(taskData) {
+            try {
+                await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(taskData)
+                });
+                alert('เพิ่มงานสำเร็จ');
+            } catch (error) {
+                console.error('Error creating task:', error);
+                alert('เกิดข้อผิดพลาดในการเพิ่มงาน');
+            }
+        }
+
+        async function updateTask(id, taskData) {
+            try {
+                await fetch(`${API_URL}/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(taskData)
+                });
+                alert('อัพเดทงานสำเร็จ');
+            } catch (error) {
+                console.error('Error updating task:', error);
+                alert('เกิดข้อผิดพลาดในการอัพเดทงาน');
+            }
+        }
+
+        async function deleteTask(id) {
+            if (confirm('คุณต้องการลบงานนี้ใช่หรือไม่?')) {
+                try {
+                    await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
+                    loadTasks();
+                    alert('ลบงานสำเร็จ');
+                } catch (error) {
+                    console.error('Error deleting task:', error);
+                    alert('เกิดข้อผิดพลาดในการลบงาน');
+                }
+            }
+        }
+
+        function displayTasks(tasks) {
+            const tbody = document.querySelector('#taskTable tbody');
+            tbody.innerHTML = '';
+            
+            tasks.forEach(task => {
+                const row = tbody.insertRow();
+                const dueDate = new Date(task.due_date).toLocaleString('th-TH');
+                const createdAt = new Date(task.created_at).toLocaleString('th-TH');
+                
+                row.innerHTML = `
+                    <td>${task.title}</td>
+                    <td>${task.description}</td>
+                    <td class="status-${task.status}">${task.status === 'completed' ? 'เสร็จสิ้น' : 'รอดำเนินการ'}</td>
+                    <td class="priority-${task.priority}">
+                        ${task.priority === 'high' ? 'สูง' : task.priority === 'medium' ? 'ปานกลาง' : 'ต่ำ'}
+                    </td>
+                    <td>${dueDate}</td>
+                    <td>${createdAt}</td>
+                    <td>
+                        <button class="btn-edit" onclick="editTask('${task.id}')">แก้ไข</button>
+                        <button class="btn-delete" onclick="deleteTask('${task.id}')">ลบ</button>
+                    </td>
+                `;
+            });
+        }
+
+        async function editTask(id) {
+            try {
+                const response = await fetch(`${API_URL}/${id}`);
+                const task = await response.json();
+                
+                document.getElementById('taskId').value = task.id;
+                document.getElementById('title').value = task.title;
+                document.getElementById('description').value = task.description;
+                document.getElementById('status').value = task.status;
+                document.getElementById('priority').value = task.priority;
+                document.getElementById('due_date').value = new Date(task.due_date).toISOString().slice(0, 16);
+                
+                isEditing = true;
+                document.getElementById('submitBtn').textContent = 'อัพเดท';
+            } catch (error) {
+                console.error('Error loading task for edit:', error);
+                alert('เกิดข้อผิดพลาดในการโหลดข้อมูลงาน');
+            }
+        }
+
+        function resetForm() {
+            document.getElementById('taskForm').reset();
+            document.getElementById('taskId').value = '';
+            isEditing = false;
+            document.getElementById('submitBtn').textContent = 'เพิ่มงาน';
+        }
+    </script>
+</body>
+</html>

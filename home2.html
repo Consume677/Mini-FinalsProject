@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        header {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            padding: 1rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        nav a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        /* Highlight active links */
+        nav a.active {
+            background-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .content {
+            max-width: 1200px;
+            margin: 100px auto 80px;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .welcome {
+            text-align: center;
+            padding: 3rem 0;
+            background: linear-gradient(135deg, #f6d365, #fda085);
+            border-radius: 10px;
+            margin-bottom: 3rem;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .welcome h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .welcome p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        #contact {
+            background-color: #f8f9fa;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+        }
+
+        #contact h2 {
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+        }
+
+        #contact p {
+            color: #666;
+            margin: 0.5rem 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        #contact p::before {
+            content: '📧';
+            font-size: 1.2rem;
+        }
+
+        #contact p:last-child::before {
+            content: '📱';
+        }
+
+        footer {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f);
+            color: white;
+            text-align: center;
+            padding: 1.5rem;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+        }
+
+        footer p {
+            font-size: 1rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: row;
+                justify-content: center;
+                gap: 0.5rem;
+            }
+
+            nav a {
+                font-size: 0.9rem;
+                padding: 0.4rem 0.8rem;
+            }
+
+            .content {
+                margin: 80px 1rem 60px;
+                padding: 1rem;
+            }
+
+            .welcome {
+                padding: 2rem 1rem;
+            }
+
+            .welcome h1 {
+                font-size: 2rem;
+            }
+        }
+
+        /* Hover Effects */
+        .content:hover {
+            transform: translateY(-5px);
+            transition: transform 0.3s ease;
+        }
+
+        #contact:hover {
+            transform: scale(1.01);
+            transition: transform 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="product-page.html">Products</a>
+            <a href="todo.html">To-Do List</a>
+            <a href="cal.html">Calculator</a>
+            <a href="bmi.html">BMI</a>
+            <a href="pro.html">About Me</a>
+            <a href="index.html">Log Out</a>
+        </nav>
+    </header>
+
+    <div class="content">
+        <div class="welcome">
+            <h1>Welcome to my Website</h1>
+            
+        </div>
+        <div id="contact">
+            <h2>Contact Us</h2>
+            <p>Email: imsosleepy@example.com</p>
+            <p>Phone: 1111111111111111</p>
+        </div>
+    </div>
+
+    <footer>
+        <p>THANK YOU FOR VISITING</p>
+    </footer>
+</body>
+</html>

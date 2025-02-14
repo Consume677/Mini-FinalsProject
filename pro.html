@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 20px;
+                background-color: #f0f2f5;
+            }
+    
+            .profile-container {
+                max-width: 600px;
+                margin: 0 auto;
+                background-color: white;
+                border-radius: 10px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                overflow: hidden;
+                position: relative;
+            }
+    
+            .profile-photo {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 4px solid white;
+    background-color: #ddd;
+    position: absolute;
+    top: 50%;  /* จัดให้อยู่กึ่งกลางแนวตั้ง */
+    left: 50%; /* จัดให้อยู่กึ่งกลางแนวนอน */
+    transform: translate(-50%, -50%); /* ปรับตำแหน่งให้กึ่งกลางพอดี */
+    z-index: 2;
+    display: flex;
+    margin-top: -135px;
+    overflow: hidden; /* ป้องกันภาพล้น */
+}
+
+.profile-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* ป้องกันภาพเสียรูป */
+    border-radius: 50%;
+}
+    
+                .cover-photo {
+                height: 150px;  /* Reduced height */
+                background-color: #1877f2;
+                margin-top: 25px;  /* Added margin to make space for photo */
+            }
+    
+            .profile-info {
+                padding: 20px;
+                text-align: center;
+            }
+    
+    .profile-name {
+     font-size: 24px;
+     font-weight: bold;
+     margin-bottom: 10px;
+    }
+    
+            .profile-title {
+                color: #65676b;
+                margin-bottom: 20px;
+            }
+    
+                     .profile-stats {
+                display: flex;
+                justify-content: center;
+                gap: 40px;
+                margin-bottom: 20px;
+                padding: 20px 0;
+                border-top: 1px solid #ddd;
+                 border-bottom: 1px solid #ddd;
+            }
+    
+            .stat {
+                text-align: center;
+            }
+    
+            .stat-number {
+                font-weight: bold;
+                font-size: 20px;
+                color: #1877f2;
+            }
+    
+.stat-label {
+color: #65676b;
+font-size: 14px;
+}
+    
+            .profile-bio {
+                padding: 0 20px 20px;
+                color: #1c1e21;
+                line-height: 1.5;
+            }
+            .button {
+                padding: 8px 20px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                font-weight: bold;
+                transition: background-color 0.2s;
+            }
+    
+            .primary-button {
+                background-color: #1877f2;
+                color: white;
+            }
+    
+            .primary-button:hover {
+                background-color: #166fe5;
+            }
+    
+            .secondary-button {
+                background-color: #e4e6eb;
+                color: #050505;
+            }
+    
+            .secondary-button:hover {
+                background-color: #d8dadf;
+            }
+    
+            .extra-buttons {
+                padding: 20px;
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 10px;
+                background-color: #f8f9fa;
+                border-top: 1px solid #ddd;
+            }
+    
+.extra-button {
+                background-color: #4CAF50;
+                color: white;
+                padding: 12px 20px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                font-weight: bold;
+                transition: background-color 0.2s;
+                text-align: center;
+}
+    
+            .extra-button:hover {
+                background-color: #45a049;
+            }
+        </style>
+    </head>
+<html>
+<body>
+    <div class="profile-container">
+        <div class="profile-photo">
+            <img src="puppy.jpg" alt="Profile Photo">
+        </div>
+        <div class="cover-photo"></div>
+        <div class="profile-info">
+            <div class="profile-name">Pitchayada</div>
+            <div class="profile-title">ชอบดูหนัง ชอบร้องเพลง ชอบฟังเพลง ชอบทุกอย่าง</div>
+        </div>
+        <div class="profile-stats">
+            <div class="stat">
+                <div class="stat-number">1,234</div>
+                <div class="stat-label">ผู้ติดตาม</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">567</div>
+                <div class="stat-label">กำลังติดตาม</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">89</div>
+                <div class="stat-label">โพส</div>
+            </div>
+        </div>
+        <div class="extra-buttons">
+            <button class="extra-button"><a href="home2.html">HOME</a></button>
+            <button class="extra-button"><a href="cal.html">CALCULATE</a></button>
+            <button class="extra-button"><a href="bmi.html">BMI</a></button>
+        </div>
+    </div>
+</body>
+</html>
